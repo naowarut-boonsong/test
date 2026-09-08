@@ -12,21 +12,21 @@
 
 <style>
   :root {
-    /* โทนสีใหม่ชนิดฉีกแนว: Neo-Tech Cyber Smart Farm (โทนเข้ม + นีออน) */
-    --bg-main: #0b0f19;        /* สีหลังเข้มลึกอมน้ำเงิน */
-    --card-bg: #111827;        /* สีพื้นหลังการ์ด */
-    --card-border: #1f2937;    /* เส้นขอบการ์ด */
+    /* โทนสี Neo-Tech Cyberpunk */
+    --bg-main: #070a12;        
+    --card-bg: rgba(18, 24, 38, 0.85);        
+    --card-border: #2a3447;    
     
-    --primary: #8b5cf6;        /* สีม่วงนีออน (Cyber Violet) */
-    --accent: #06b6d4;         /* สีฟ้าไซแอน (Cyber Cyan) */
+    --primary: #8b5cf6;        
+    --accent: #06b6d4;         
     
-    --text-dark: #f3f4f6;      /* ข้อความหลัก สีขาวสว่าง */
-    --text-muted: #9ca3af;     /* ข้อความรอง สีเทา */
+    --text-dark: #f3f4f6;      
+    --text-muted: #8e9bb0;     
     
-    /* สีสถานะความชื้นสไตล์ นีออนไฮไลต์ */
-    --color-dry: #ff2a6d;      /* ชมพูนีออนสว่าง: แห้งไป (<20%) */
-    --color-normal: #05ffa1;   /* เขียวนีออนฟลูออเรสเซนต์: พอดี (20-70%) */
-    --color-wet: #00f0ff;      /* ฟ้าไซแอนนีออน: แฉะไป (>70%) */
+    /* สีนีออนไฮไลต์ */
+    --color-dry: #ff2a6d;      /* ชมพูนีออน: แห้งไป (<20%) */
+    --color-normal: #00f0ff;   /* ไซแอนนีออน: พอดี (20-70%) */
+    --color-wet: #a855f7;      /* ม่วงนีออน: แฉะไป (>70%) */
   }
 
   * { box-sizing: border-box; font-family: 'Prompt', sans-serif; margin: 0; padding: 0; }
@@ -36,21 +36,22 @@
     color: var(--text-dark); 
     padding-bottom: 50px;
     min-height: 100vh;
-    /* ฉากหลังลายจุด Tech Grid Pattern */
-    background-image: radial-gradient(#1f2937 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 40%);
   }
   
   .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
   
-  /* --- ส่วนหัว (Header) สไตล์ Tech Dashboard --- */
+  /* --- ส่วนหัว (Header) --- */
   .header {
     display: flex; justify-content: space-between; align-items: center; 
     margin-bottom: 30px; flex-wrap: wrap; gap: 20px;
-    background: linear-gradient(90deg, #131c31 0%, #111827 100%);
-    padding: 24px 30px; border-radius: 16px; color: var(--text-dark);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    box-shadow: 0 0 25px rgba(139, 92, 246, 0.1);
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    padding: 24px 30px; border-radius: 20px; color: var(--text-dark);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   }
   .brand h1 { 
     font-size: 24px; 
@@ -58,16 +59,16 @@
     display: flex; 
     align-items: center; 
     gap: 12px;
-    background: linear-gradient(to right, #00f0ff, #8b5cf6, #ff2a6d);
+    background: linear-gradient(to right, #00f0ff, #a855f7, #ff2a6d);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .brand p { color: var(--text-muted); font-size: 13px; margin-top: 4px; font-weight: 400; }
+  .brand p { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
   
   .status-badge {
-    background: rgba(17, 24, 39, 0.8); 
+    background: rgba(7, 10, 18, 0.6); 
     padding: 8px 18px; 
-    border-radius: 8px;
+    border-radius: 30px;
     font-size: 13px; 
     font-weight: 500;
     display: flex; 
@@ -87,20 +88,21 @@
   @keyframes blink { 0% { opacity: 0.3; } 100% { opacity: 1; } }
 
   /* --- Grid การจัดวาง --- */
-  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 24px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px; }
   .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
   @media (max-width: 850px) { .grid-layout { grid-template-columns: 1fr; } }
 
   /* --- การ์ดทั่วไป --- */
   .card {
     background: var(--card-bg); 
-    border-radius: 16px; 
+    backdrop-filter: blur(12px);
+    border-radius: 20px; 
     padding: 26px;
     border: 1px solid var(--card-border);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
   }
   .card-title { 
-    font-size: 17px; 
+    font-size: 16px; 
     font-weight: 600; 
     margin-bottom: 20px; 
     color: var(--text-dark); 
@@ -110,45 +112,107 @@
     letter-spacing: 0.5px;
   }
 
-  /* --- การ์ดแปลงทุเรียน (Zone Card Redesign) --- */
+  /* --- การ์ดแปลงทุเรียน (Zone Card) --- */
   .zone-card { 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
     text-align: center; 
     position: relative; 
-    border-top: 3px solid var(--status-color);
+    border: 1px solid var(--status-color);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4), inset 0 0 15px var(--status-glow);
   }
   .zone-name { font-size: 18px; font-weight: 600; margin-bottom: 4px; color: var(--text-dark); }
   
-  /* วงกลม Progress Bar สไตล์ แผงควบคุมไซเบอร์ */
-  .gauge-container { position: relative; width: 160px; height: 160px; margin: 20px 0; }
-  .gauge-circle {
-    width: 100%; height: 100%; border-radius: 50%;
-    background: conic-gradient(var(--status-color) var(--percent), #1f2937 0deg);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5), inset 0 0 15px var(--status-color);
-    transition: background 0.5s ease;
-    padding: 12px;
+  /* ======================================================================
+     ดีไซน์วงกลมสถานะแบบใหม่ (Futuristic Dual-Ring Gauge)
+     ====================================================================== */
+  .gauge-container { 
+    position: relative; 
+    width: 170px; 
+    height: 170px; 
+    margin: 20px 0; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .gauge-inner {
-    width: 100%; height: 100%; 
-    background: #0b0f19; 
+  
+  /* วงแหวนรอบนอก (Outer Tech Ring) */
+  .gauge-outer-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    border: 1px solid var(--card-border);
+    border: 2px dashed rgba(255, 255, 255, 0.12);
+    animation: rotateRing 20s linear infinite;
   }
-  .gauge-value { font-size: 42px; font-weight: 700; color: #ffffff; line-height: 1; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-  .gauge-unit { font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  @keyframes rotateRing { 100% { transform: rotate(360deg); } }
+
+  /* วงกลมหลอดค่าความชื้นหลัก */
+  .gauge-circle {
+    width: 145px; 
+    height: 145px; 
+    border-radius: 50%;
+    background: conic-gradient(var(--status-color) var(--percent), rgba(255, 255, 255, 0.05) 0deg);
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    box-shadow: 0 0 20px var(--status-glow);
+    transition: background 0.6s ease;
+    padding: 10px;
+    position: relative;
+  }
+
+  /* เข็ม/จุดบอกตำแหน่งตรงกลางวงแหวน */
+  .gauge-circle::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    width: 6px;
+    height: 6px;
+    background: var(--status-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--status-color);
+  }
+
+  .gauge-inner {
+    width: 100%; 
+    height: 100%; 
+    background: #090d16; 
+    border-radius: 50%;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+  }
+  .gauge-value { 
+    font-size: 38px; 
+    font-weight: 700; 
+    color: #ffffff; 
+    line-height: 1; 
+    text-shadow: 0 0 12px var(--status-glow); 
+  }
+  .gauge-unit { 
+    font-size: 11px; 
+    color: var(--text-muted); 
+    margin-top: 6px; 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+  }
   
   .zone-status { 
-    padding: 6px 16px; 
-    border-radius: 6px; 
+    padding: 6px 18px; 
+    border-radius: 20px; 
     font-size: 13px; 
     font-weight: 600; 
     margin-bottom: 10px;
     letter-spacing: 0.5px;
     border: 1px solid var(--status-color);
+    background: var(--status-bg);
+    color: var(--status-color);
+    box-shadow: 0 0 10px var(--status-glow);
   }
   .zone-time { font-size: 12px; color: var(--text-muted); }
 
@@ -158,23 +222,23 @@
   .log-item {
     display: flex; align-items: center; justify-content: space-between;
     padding: 12px 10px; 
-    border-bottom: 1px solid var(--card-border); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
     font-size: 13px;
   }
   .log-item:last-child { border-bottom: none; }
   .log-zone { font-weight: 500; color: var(--text-dark); }
   .log-time { font-size: 12px; color: var(--text-muted); }
   .log-badge { 
-    padding: 2px 8px; 
-    border-radius: 4px; 
+    padding: 3px 10px; 
+    border-radius: 12px; 
     font-size: 12px; 
     font-weight: 700; 
-    color: #000000; 
+    color: #070a12; 
   }
 
   /* Scrollbar สำหรับ Log */
   .log-list::-webkit-scrollbar { width: 4px; }
-  .log-list::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+  .log-list::-webkit-scrollbar-thumb { background: #2a3447; border-radius: 4px; }
 </style>
 </head>
 <body>
@@ -183,8 +247,8 @@
   <!-- Header -->
   <div class="header">
     <div class="brand">
-      <h1>⚡ DURIAN SMART MONITOR</h1>
-      <p>ระบบตรวจวัดความชื้นวิเคราะห์เชิงลึกแบบ Real-Time</p>
+      <h1>📡 DURIAN SMART MONITORING</h1>
+      <p>ระบบติดตามวัดระดับความชื้นเชิงลึกแบบ Real-Time</p>
     </div>
     <div class="status-badge">
       <div class="dot" id="liveDot"></div>
@@ -201,7 +265,7 @@
   <div class="grid-layout">
     <!-- กราฟแนวโน้ม -->
     <div class="card">
-      <div class="card-title">📈 ANALYTICS LOG (กราฟแสดงแนวโน้ม)</div>
+      <div class="card-title">📈 REAL-TIME TREND CHART (กราฟแนวโน้ม)</div>
       <div class="chart-container">
         <canvas id="trendChart"></canvas>
       </div>
@@ -209,7 +273,7 @@
     
     <!-- บันทึกล่าสุด -->
     <div class="card">
-      <div class="card-title">📋 RECENT DATA (ประวัติ)</div>
+      <div class="card-title">📋 SYSTEM LOGS (บันทึกล่าสุด)</div>
       <ul class="log-list" id="logList">
         <li class="log-item" style="color:var(--text-muted); justify-content:center;">รอข้อมูล...</li>
       </ul>
@@ -228,9 +292,9 @@ const CONFIG = {
 
 // การตั้งค่าสีและข้อความ
 const STATUS_DEF = {
-  dry:    { color: "var(--color-dry)",    bg: "rgba(255, 42, 109, 0.1)", label: "⚠️ ดินแห้ง (ขาดน้ำ)" },
-  normal: { color: "var(--color-normal)", bg: "rgba(5, 255, 161, 0.1)", label: "✅ ความชื้นเหมาะสม" },
-  wet:    { color: "var(--color-wet)",    bg: "rgba(0, 240, 255, 0.1)",  label: "🚨 ชื้นสูง (ระวังรากเน่า)" }
+  dry:    { color: "var(--color-dry)",    glow: "rgba(255, 42, 109, 0.4)", bg: "rgba(255, 42, 109, 0.1)", label: "⚠️ ดินแห้ง (ขาดน้ำ)" },
+  normal: { color: "var(--color-normal)", glow: "rgba(0, 240, 255, 0.4)",  bg: "rgba(0, 240, 255, 0.1)",  label: "✅ ความชื้นเหมาะสม" },
+  wet:    { color: "var(--color-wet)",    glow: "rgba(168, 85, 247, 0.4)", bg: "rgba(168, 85, 247, 0.1)", label: "🚨 ชื้นสูง (ระวังรากเน่า)" }
 };
 
 let chartInstance = null; // เก็บตัวแปรสำหรับกราฟ Chart.js
@@ -242,7 +306,7 @@ function formatTime(isoStr) {
   return d.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
 }
 
-// 1. เรนเดอร์การ์ดวงกลมด้านบน
+// 1. เรนเดอร์การ์ดและวงกลมสถานะรูปแบบใหม่
 function renderZones(zones) {
   const grid = document.getElementById("zoneGrid");
   
@@ -256,10 +320,11 @@ function renderZones(zones) {
     const s = STATUS_DEF[z.status] || STATUS_DEF.normal;
     
     return `
-      <div class="card zone-card" style="--status-color: ${s.color}; --percent: ${pct}%;">
+      <div class="card zone-card" style="--status-color: ${s.color}; --status-glow: ${s.glow}; --status-bg: ${s.bg}; --percent: ${pct}%;">
         <div class="zone-name">โซนแปลงทุเรียน ${z.zone}</div>
         
         <div class="gauge-container">
+          <div class="gauge-outer-ring"></div>
           <div class="gauge-circle">
             <div class="gauge-inner">
               <span class="gauge-value">${z.moisture}</span>
@@ -268,7 +333,7 @@ function renderZones(zones) {
           </div>
         </div>
 
-        <div class="zone-status" style="background-color: ${s.bg}; color: ${s.color};">
+        <div class="zone-status">
           ${s.label}
         </div>
         <div class="zone-time">SYNC: ${formatTime(z.updatedAt)} น.</div>
@@ -304,15 +369,14 @@ function renderLog(history) {
   }).join("");
 }
 
-// 3. วาดกราฟเส้นด้วย Chart.js
+// 3. วาดกราฟเส้นรูปแบบใหม่ (Stepped & Glowing Line Chart)
 function renderChart(history, zones) {
   const ctx = document.getElementById('trendChart').getContext('2d');
   
   const sortedHistory = [...history].sort((a,b) => new Date(a.time) - new Date(b.time));
   const labels = [...new Set(sortedHistory.map(h => formatTime(h.time)))];
   
-  // โทนสีเส้นกราฟแบบ นีออน
-  const colors = ["#00f0ff", "#ff2a6d", "#05ffa1", "#8b5cf6", "#facc15"];
+  const colors = ["#00f0ff", "#ff2a6d", "#a855f7", "#3b82f6", "#facc15"];
   const datasets = zones.map((z, index) => {
     const zoneData = labels.map(label => {
       const record = sortedHistory.find(h => formatTime(h.time) === label && h.zone === z.zone);
@@ -321,15 +385,31 @@ function renderChart(history, zones) {
 
     const themeColor = colors[index % colors.length];
 
+    // สร้างการไล่ระดับสีพื้นหลังใต้เส้นกราฟ
+    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, themeColor + '33');
+    gradient.addColorStop(1, themeColor + '00');
+
     return {
       label: `แปลง ${z.zone}`,
       data: zoneData,
       borderColor: themeColor,
-      backgroundColor: themeColor + '10',
-      borderWidth: 2,
+      backgroundColor: gradient,
+      borderWidth: 3,
+      
+      // ปรับรูปแบบกราฟใหม่ ให้เป็นสเต็ปผสมความโค้ง (Stepped Smooth)
+      stepped: false,
+      cubicInterpolationMode: 'monotone', // เส้นโค้งแบบนุ่มนวล
+      
+      // ปรับแต่งจุดแสดงข้อมูลบนกราฟ (Glowing Points)
       pointRadius: 4,
-      pointBackgroundColor: themeColor,
-      tension: 0.2,
+      pointHoverRadius: 8,
+      pointBackgroundColor: '#070a12',
+      pointBorderColor: themeColor,
+      pointBorderWidth: 2,
+      pointHoverBackgroundColor: themeColor,
+      pointHoverBorderColor: '#ffffff',
+      
       fill: true,
       spanGaps: true
     };
@@ -346,23 +426,36 @@ function renderChart(history, zones) {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
         plugins: {
           legend: { 
             position: 'bottom',
-            labels: { color: '#9ca3af', font: { family: 'Prompt', size: 12 } }
+            labels: { color: '#8e9bb0', font: { family: 'Prompt', size: 12 }, usePointStyle: true, boxWidth: 8 }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(9, 13, 22, 0.9)',
+            titleColor: '#ffffff',
+            bodyColor: '#8e9bb0',
+            borderColor: '#2a3447',
+            borderWidth: 1,
+            padding: 12,
+            displayColors: true
           }
         },
         scales: {
           x: {
-            grid: { color: '#1f2937' },
-            ticks: { color: '#9ca3af', font: { family: 'Prompt' } }
+            grid: { color: 'rgba(255, 255, 255, 0.05)', strokeDash: [4, 4] },
+            ticks: { color: '#8e9bb0', font: { family: 'Prompt' } }
           },
           y: { 
             beginAtZero: true, 
             max: 100,
-            grid: { color: '#1f2937' },
-            ticks: { color: '#9ca3af', font: { family: 'Prompt' } },
-            title: { display: true, text: 'ความชื้น (%)', color: '#6b7280', font: { family: 'Prompt' } }
+            grid: { color: 'rgba(255, 255, 255, 0.05)', strokeDash: [4, 4] },
+            ticks: { color: '#8e9bb0', font: { family: 'Prompt' } },
+            title: { display: true, text: 'ความชื้น (%)', color: '#64748b', font: { family: 'Prompt' } }
           }
         }
       }
