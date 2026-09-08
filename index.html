@@ -1,9 +1,429 @@
+นี่คือโค้ดอีกเวอร์ชันที่ออกแบบในสไตล์ **Fresh Organic Light (มินิมอล โมเดิร์น คลีน)** ซึ่งจะแตกต่างอย่างชัดเจนจากทั้ง **เวอร์ชันแรก (โทนสว่างสีเขียวเดิม)** และ **เวอร์ชันที่แล้ว (โทนเข้ม Dark Mode)** ครับ
+
+### 🎨 จุดเด่นการดีไซน์ในเวอร์ชันนี้ (Fresh Organic Theme):
+
+1. **โทนสีใหม่ (Clean Natural Tone):**
+* ใช้ **สีพื้นหลังครีมอ่อนมินิมอล (`#fcfbf7`)** ให้ความรู้สึกอบอุ่น สะอาด สะอาดตา
+* เปลี่ยนสีแบรนด์เป็น **เขียวเซจ/เขียวมะกอกโมเดิร์น (`#1e3a2b` & `#2d5e40`)** ที่ให้ความรู้สึกเป็นระบบการเกษตรสมัยใหม่ระดับพรีเมียม
+* **สถานะความชื้น:**
+* ⚠️ **แห้งไป (<20%):** สีส้มพีชอมแดงสดใส (`#e05d38`)
+* ✅ **พอดี (20-70%):** สีเขียวยอดอ่อนสดชื่น (`#10b981`)
+* 🚨 **แฉะไป (>70%):** สีน้ำเงินมหาสมุทรแบบโมเดิร์น (`#2563eb`)
+
+
+
+
+2. **ปรับเปลี่ยนรูปทรง UI (Card & Gauge Redesign):**
+* การ์ดใช้รูปทรงแบบ Soft-corner (โค้งมนนุ่มนวล) มีเส้นขอบบางๆ สไตล์ **Neumorphic / Clean UI**
+* ตัวแสดงเปอร์เซ็นต์ความชื้นเปลี่ยนรูปแบบการไล่ระดับสี (Gradient Ring) พร้อมวงกลมซ้อนสองชั้นแบบแอ็กทีฟ
+
+
+3. **ปรับรูปแบบ Header และ Layout:**
+* หัวข้อหน้าเว็บปรับดีไซน์เป็นสไตล์แผงควบคุมอัจฉริยะแบบมินิมอล มีจุดสถานะแบบ Pills Badge
+
+
+
+---
+
+```html
 <!DOCTYPE html>
-<html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Durian Smart Farm - ระบบติดตามความชื้นสวนทุเรียน</title>
+<!-- ใช้ฟอนต์ Prompt -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- เรียกใช้ Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  :root {
+    /* ธีมใหม่: Fresh Organic Minimalist (สว่าง สะอาดตา พรีเมียม) */
+    --bg-main: #fcfbf7;        /* สีครีมอ่อนธรรมชาติ */
+    --card-bg: #ffffff;        /* สีขาวบริสุทธิ์ */
+    --card-border: #e2e8f0;    /* เส้นขอบการ์ดบางๆ */
+    
+    --primary: #1e3a2b;        /* สีเขียวป่าลึก (Deep Forest) */
+    --primary-light: #2d5e40;  /* สีเขียวมะกอก */
+    --accent: #d97706;         /* สีทองสุกทุเรียน */
+    
+    --text-dark: #0f172a;      /* ข้อความหลัก สีเทาเข้มเกือบดำ */
+    --text-muted: #64748b;     /* ข้อความรอง */
+    
+    /* สีสถานะความชื้น */
+    --color-dry: #e05d38;      /* ส้มพีชเข้ม: แห้งไป (<20%) */
+    --color-normal: #10b981;   /* เขียวมิ้นต์สด: พอดี (20-70%) */
+    --color-wet: #2563eb;      /* ฟ้าอมน้ำเงิน: แฉะไป (>70%) */
+  }
+
+  * { box-sizing: border-box; font-family: 'Prompt', sans-serif; margin: 0; padding: 0; }
+  
+  body { 
+    background-color: var(--bg-main); 
+    color: var(--text-dark); 
+    padding-bottom: 50px;
+    min-height: 100vh;
+  }
+  
+  .container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  
+  /* --- ส่วนหัว (Header) ดีไซน์มินิมอลเรียบหรู --- */
+  .header {
+    display: flex; justify-content: space-between; align-items: center; 
+    margin-bottom: 30px; flex-wrap: wrap; gap: 20px;
+    background: var(--card-bg);
+    padding: 24px 30px; border-radius: 20px; color: var(--text-dark);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  }
+  .brand h1 { 
+    font-size: 24px; 
+    font-weight: 700; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
+    color: var(--primary);
+  }
+  .brand p { color: var(--text-muted); font-size: 14px; margin-top: 4px; font-weight: 400; }
+  
+  .status-badge {
+    background: #f1f5f9; 
+    padding: 8px 18px; 
+    border-radius: 30px;
+    font-size: 13px; 
+    font-weight: 500;
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    color: #334155;
+    border: 1px solid #e2e8f0;
+  }
+  .dot { 
+    width: 8px; 
+    height: 8px; 
+    background-color: var(--color-normal); 
+    border-radius: 50%; 
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); 
+    animation: blink 1.8s infinite; 
+  }
+  @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+  /* --- Grid การจัดวาง --- */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 24px; margin-bottom: 24px; }
+  .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+  @media (max-width: 850px) { .grid-layout { grid-template-columns: 1fr; } }
+
+  /* --- การ์ดทั่วไป --- */
+  .card {
+    background: var(--card-bg); 
+    border-radius: 20px; 
+    padding: 26px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  }
+  .card-title { 
+    font-size: 17px; 
+    font-weight: 600; 
+    margin-bottom: 20px; 
+    color: var(--primary); 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+  }
+
+  /* --- การ์ดแปลงทุเรียน (Zone Card) --- */
+  .zone-card { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    position: relative; 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .zone-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  }
+  .zone-name { font-size: 18px; font-weight: 600; margin-bottom: 4px; color: var(--primary); }
+  
+  /* วงกลม Progress Bar แบบไล่สี Gradient */
+  .gauge-container { position: relative; width: 150px; height: 150px; margin: 18px 0; }
+  .gauge-circle {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: conic-gradient(var(--status-color) var(--percent), #f1f5f9 0deg);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.5s ease;
+    padding: 10px;
+  }
+  .gauge-inner {
+    width: 100%; height: 100%; 
+    background: var(--card-bg); 
+    border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.04);
+  }
+  .gauge-value { font-size: 38px; font-weight: 700; color: var(--text-dark); line-height: 1; }
+  .gauge-unit { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  
+  .zone-status { 
+    padding: 6px 16px; 
+    border-radius: 20px; 
+    font-size: 13px; 
+    font-weight: 600; 
+    margin-bottom: 10px;
+  }
+  .zone-time { font-size: 12px; color: var(--text-muted); }
+
+  /* --- กราฟและ Log --- */
+  .chart-container { position: relative; height: 300px; width: 100%; }
+  .log-list { list-style: none; overflow-y: auto; max-height: 300px; padding-right: 5px; }
+  .log-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 8px; 
+    border-bottom: 1px solid #f1f5f9; 
+    font-size: 14px;
+  }
+  .log-item:last-child { border-bottom: none; }
+  .log-zone { font-weight: 500; color: var(--text-dark); }
+  .log-time { font-size: 12px; color: var(--text-muted); }
+  .log-badge { 
+    padding: 3px 10px; 
+    border-radius: 12px; 
+    font-size: 12px; 
+    font-weight: 600; 
+    color: #ffffff; 
+  }
+
+  /* Scrollbar สำหรับ Log */
+  .log-list::-webkit-scrollbar { width: 5px; }
+  .log-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+</style>
+</head>
 <body>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      <h1>🌱 Durian Smart Farm</h1>
+      <p>ระบบตรวจวัดความชื้นดินแบบ Real-Time เพื่อสุขภาพต้นทุเรียน</p>
+    </div>
+    <div class="status-badge">
+      <div class="dot" id="liveDot"></div>
+      <span id="liveLabel">กำลังซิงค์ข้อมูล...</span>
+    </div>
+  </div>
+
+  <!-- สถานะแต่ละแปลง (Zone Cards) -->
+  <div class="grid-2" id="zoneGrid">
+    <!-- ข้อมูลจะถูกสร้างที่นี่ด้วย JavaScript -->
+  </div>
+
+  <!-- กราฟ และ ประวัติล่าสุด -->
+  <div class="grid-layout">
+    <!-- กราฟแนวโน้ม -->
+    <div class="card">
+      <div class="card-title">📊 แนวโน้มความชื้นย้อนหลัง</div>
+      <div class="chart-container">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+    
+    <!-- บันทึกล่าสุด -->
+    <div class="card">
+      <div class="card-title">📝 บันทึกล่าสุด</div>
+      <ul class="log-list" id="logList">
+        <li class="log-item" style="color:var(--text-muted); justify-content:center;">รอข้อมูล...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ======================================================================
+   ตั้งค่าการเชื่อมต่อ (API URL จาก Google Apps Script ของคุณ)
+   ====================================================================== */
+const CONFIG = {
+  API_URL: "https://script.google.com/macros/s/AKfycbyTRhyPyhDCzkzf1NazTklnBX6hxYKPZI-qMt5B9tRar2DFTarXAdTxjHYdoANgnwUC/exec", 
+  REFRESH_MS: 30000 // เช็กข้อมูลบนเว็บทุกๆ 30 วินาที
+};
+
+// การตั้งค่าสีและข้อความ
+const STATUS_DEF = {
+  dry:    { color: "var(--color-dry)",    bg: "#fef2f2", label: "⚠️ ดินแห้ง (ขาดน้ำ)" },
+  normal: { color: "var(--color-normal)", bg: "#ecfdf5", label: "✅ ความชื้นเหมาะสม" },
+  wet:    { color: "var(--color-wet)",    bg: "#eff6ff", label: "🚨 ชื้นสูง (ระวังรากเน่า)" }
+};
+
+let chartInstance = null; // เก็บตัวแปรสำหรับกราฟ Chart.js
+
+// ฟังก์ชันจัดรูปแบบเวลา
+function formatTime(isoStr) {
+  if(!isoStr) return "—";
+  const d = new Date(isoStr);
+  return d.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+}
+
+// 1. เรนเดอร์การ์ดวงกลมด้านบน
+function renderZones(zones) {
+  const grid = document.getElementById("zoneGrid");
+  
+  if(zones.length === 0) {
+    grid.innerHTML = `<div class="card"><p style="text-align:center; color:var(--text-muted);">ยังไม่มีข้อมูลแปลง</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = zones.map(z => {
+    const pct = Math.max(0, Math.min(100, z.moisture));
+    const s = STATUS_DEF[z.status] || STATUS_DEF.normal;
+    
+    return `
+      <div class="card zone-card" style="--status-color: ${s.color}; --percent: ${pct}%;">
+        <div class="zone-name">แปลง ${z.zone}</div>
+        
+        <div class="gauge-container">
+          <div class="gauge-circle">
+            <div class="gauge-inner">
+              <span class="gauge-value">${z.moisture}</span>
+              <span class="gauge-unit">% ความชื้น</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="zone-status" style="background-color: ${s.bg}; color: ${s.color};">
+          ${s.label}
+        </div>
+        <div class="zone-time">อัปเดตล่าสุด: ${formatTime(z.updatedAt)} น.</div>
+      </div>
+    `;
+  }).join("");
+}
+
+// 2. เรนเดอร์ประวัติการบันทึก (Log)
+function renderLog(history) {
+  const list = document.getElementById("logList");
+  const recent = [...history].slice(-15).reverse();
+  
+  if (recent.length === 0) {
+    list.innerHTML = `<li class="log-item" style="color:var(--text-muted); justify-content:center;">ไม่มีประวัติการบันทึก</li>`;
+    return;
+  }
+
+  list.innerHTML = recent.map(h => {
+    let badgeColor = "var(--color-normal)";
+    if (h.moisture < 20) badgeColor = "var(--color-dry)";
+    else if (h.moisture > 70) badgeColor = "var(--color-wet)";
+    
+    return `
+      <li class="log-item">
+        <div>
+          <span class="log-time">${formatTime(h.time)} น.</span>
+          <span class="log-zone" style="margin-left: 10px;">แปลง ${h.zone}</span>
+        </div>
+        <span class="log-badge" style="background-color: ${badgeColor};">${h.moisture}%</span>
+      </li>
+    `;
+  }).join("");
+}
+
+// 3. วาดกราฟเส้นด้วย Chart.js
+function renderChart(history, zones) {
+  const ctx = document.getElementById('trendChart').getContext('2d');
+  
+  const sortedHistory = [...history].sort((a,b) => new Date(a.time) - new Date(b.time));
+  const labels = [...new Set(sortedHistory.map(h => formatTime(h.time)))];
+  
+  // โทนสีเส้นกราฟแบบ Organic Modern
+  const colors = ["#2d5e40", "#d97706", "#2563eb", "#7c3aed", "#db2777"];
+  const datasets = zones.map((z, index) => {
+    const zoneData = labels.map(label => {
+      const record = sortedHistory.find(h => formatTime(h.time) === label && h.zone === z.zone);
+      return record ? record.moisture : null;
+    });
+
+    const themeColor = colors[index % colors.length];
+
+    return {
+      label: `แปลง ${z.zone}`,
+      data: zoneData,
+      borderColor: themeColor,
+      backgroundColor: themeColor + '15',
+      borderWidth: 2,
+      pointRadius: 3,
+      tension: 0.3,
+      fill: true,
+      spanGaps: true
+    };
+  });
+
+  if (chartInstance) {
+    chartInstance.data.labels = labels;
+    chartInstance.data.datasets = datasets;
+    chartInstance.update();
+  } else {
+    chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { 
+            position: 'bottom',
+            labels: { color: '#64748b', font: { family: 'Prompt', size: 12 } }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: '#64748b', font: { family: 'Prompt' } }
+          },
+          y: { 
+            beginAtZero: true, 
+            max: 100,
+            grid: { color: '#f1f5f9' },
+            ticks: { color: '#64748b', font: { family: 'Prompt' } },
+            title: { display: true, text: 'ความชื้น (%)', color: '#94a3b8', font: { family: 'Prompt' } }
+          }
+        }
+      }
+    });
+  }
+}
+
+// ฟังก์ชันหลักสำหรับเรียก API และอัปเดตหน้าจอ
+async function fetchLiveData() {
+  const statusLabel = document.getElementById("liveLabel");
+  const dot = document.getElementById("liveDot");
+  
+  try {
+    const res = await fetch(CONFIG.API_URL + "?action=status", { cache: "no-store" });
+    if (!res.ok) throw new Error("bad response");
+    const data = await res.json();
+    
+    if (data.zones && data.zones.length > 0) {
+      statusLabel.textContent = "เชื่อมต่อแล้ว (" + new Date().toLocaleTimeString('th-TH') + ")";
+      dot.style.backgroundColor = "var(--color-normal)";
+      
+      renderZones(data.zones);
+      renderLog(data.history);
+      renderChart(data.history, data.zones);
+    }
+  } catch (err) {
+    console.warn("Error fetching data:", err);
+    statusLabel.textContent = "ขาดการเชื่อมต่อ";
+    dot.style.backgroundColor = "var(--color-dry)";
+  }
+}
+
+// เริ่มดึงข้อมูลทันทีที่เปิดเว็บ และตั้งเวลารีเฟรช
+fetchLiveData();
+setInterval(fetchLiveData, CONFIG.REFRESH_MS);
+</script>
 
 </body>
 </html>
+
+```
