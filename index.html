@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Durian Smart Farm - Command Center</title>
-<!-- ใช้ฟอนต์ Prompt -->
+<title>Durian Smart Farm - Tactical Hub</title>
+
+<!-- Google Fonts: Orbitron (Sci-Fi Header Font) & Inter (Clean Modern UI) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
   :root {
-    /* โทนสีใหม่: Deep Cosmic Dark & Cyber Cyan */
+    /* Color Palette: Deep Space & Cyberpunk Neon */
     --bg-dark: #030712;
-    --panel-bg: rgba(15, 23, 42, 0.75);
+    --panel-bg: rgba(15, 23, 42, 0.8);
     --panel-border: rgba(56, 189, 248, 0.2);
     
     --neon-cyan: #00f0ff;
@@ -24,20 +27,23 @@
 
     --text-main: #f8fafc;
     --text-sub: #64748b;
+    
+    --font-heading: 'Orbitron', sans-serif;
+    --font-body: 'Inter', sans-serif;
   }
 
-  * { box-sizing: border-box; font-family: 'Prompt', sans-serif; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     background-color: var(--bg-dark);
     color: var(--text-main);
+    font-family: var(--font-body);
     min-height: 100vh;
     padding: 24px;
-    /* ฉากหลังลายเรขาคณิตยุคอนาคต */
     background-image: 
       linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+    background-size: 32px 32px;
   }
 
   .wrapper { max-width: 1300px; margin: 0 auto; }
@@ -47,23 +53,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 24px;
+    padding: 18px 28px;
     background: var(--panel-bg);
     backdrop-filter: blur(16px);
     border: 1px solid var(--panel-border);
     border-radius: 12px;
     margin-bottom: 24px;
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.08);
   }
 
   .nav-title {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 20px;
+    gap: 14px;
+    font-family: var(--font-heading);
+    font-size: 18px;
     font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--text-main);
+    letter-spacing: 2px;
   }
 
   .nav-title span {
@@ -76,10 +82,12 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 13px;
-    padding: 6px 16px;
+    font-family: var(--font-heading);
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 8px 18px;
     border-radius: 20px;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
@@ -90,7 +98,7 @@
     box-shadow: 0 0 10px var(--neon-green);
   }
 
-  /* --- Bento Grid Layout รื้อใหม่ทั้งหมด --- */
+  /* --- Bento Grid Layout --- */
   .bento-grid {
     display: grid;
     grid-template-columns: 1fr 1.6fr;
@@ -101,13 +109,13 @@
     .bento-grid { grid-template-columns: 1fr; }
   }
 
-  /* --- Panel สไตล์ Tactical --- */
+  /* --- Panel Design --- */
   .panel {
     background: var(--panel-bg);
     backdrop-filter: blur(16px);
     border: 1px solid var(--panel-border);
     border-radius: 16px;
-    padding: 20px;
+    padding: 22px;
     position: relative;
     overflow: hidden;
   }
@@ -116,23 +124,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
-    padding-bottom: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .panel-title {
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
     letter-spacing: 1.5px;
     color: var(--text-sub);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    text-transform: uppercase;
   }
 
-  /* --- รูปแบบการวัดผลแนวนอนแบบใหม่ (Segmented Horizontal Bars) --- */
+  /* --- Zone Items (Segmented Horizontal Progress) --- */
   .zones-container {
     display: flex;
     flex-direction: column;
@@ -140,7 +149,7 @@
   }
 
   .zone-item {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     padding: 16px;
@@ -149,6 +158,7 @@
 
   .zone-item:hover {
     border-color: var(--panel-border);
+    transform: translateY(-1px);
   }
 
   .zone-info-head {
@@ -161,31 +171,33 @@
   .zone-label {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-weight: 600;
+    gap: 12px;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 1px;
   }
 
   .tree-badge {
-    width: 32px; height: 32px;
+    width: 34px; height: 34px;
     border-radius: 8px;
     background: rgba(255,255,255,0.05);
     display: flex; align-items: center; justify-content: center;
   }
 
   .zone-value-num {
+    font-family: var(--font-heading);
     font-size: 22px;
     font-weight: 700;
-    font-family: monospace;
   }
 
-  /* แถบหลอดวัดระดับแบบแนวนอน */
+  /* Progress Bar */
   .bar-wrapper {
-    height: 12px;
-    background: rgba(255, 255, 255, 0.05);
+    height: 10px;
+    background: rgba(255, 255, 255, 0.06);
     border-radius: 6px;
     overflow: hidden;
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .bar-fill {
@@ -204,13 +216,16 @@
   }
 
   .status-tag {
-    font-weight: 600;
-    padding: 2px 8px;
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
     border-radius: 4px;
+    letter-spacing: 1px;
     text-transform: uppercase;
   }
 
-  /* --- ฝั่งขวา: กราฟ + ประวัติย่อย --- */
+  /* --- Right Column --- */
   .right-column {
     display: flex;
     flex-direction: column;
@@ -219,7 +234,7 @@
 
   .chart-box { height: 320px; width: 100%; }
 
-  /* ตารางประวัติสไตล์ Terminal Log */
+  /* Log Table */
   .log-table {
     width: 100%;
     border-collapse: collapse;
@@ -227,14 +242,18 @@
   }
 
   .log-table th {
+    font-family: var(--font-heading);
+    font-size: 10px;
+    letter-spacing: 1px;
     text-align: left;
     color: var(--text-sub);
-    padding: 8px;
+    padding: 10px 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-transform: uppercase;
   }
 
   .log-table td {
-    padding: 10px 8px;
+    padding: 12px 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   }
 
@@ -244,7 +263,7 @@
 <body>
 
 <div class="wrapper">
-  <!-- Command Bar ด้านบน -->
+  <!-- Top Command Bar -->
   <header class="command-bar">
     <div class="nav-title">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--neon-cyan)" stroke-width="2">
@@ -260,32 +279,32 @@
     </div>
   </header>
 
-  <!-- Bento Grid การจัดวางรูปแบบใหม่ -->
+  <!-- Bento Grid Layout -->
   <div class="bento-grid">
     
-    <!-- ฝั่งซ้าย: แสดงสถานะแปลงทุเรียนด้วย Bar แบบใหม่ -->
+    <!-- Left Column: Soil Moisture Telemetry -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--neon-cyan)"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
-          การตรวจวัดความชื้นแปลงทุเรียน
+          Soil Moisture Telemetry
         </div>
       </div>
 
       <div class="zones-container" id="zoneGrid">
-        <!-- ข้อมูลหลอดแนวนอนจะมาโผล่ตรงนี้ -->
+        <!-- Rendered by JS -->
       </div>
     </div>
 
-    <!-- ฝั่งขวา: กราฟวิเคราะห์ และ Terminal Logs -->
+    <!-- Right Column: Analytics & Terminal Logs -->
     <div class="right-column">
       
-      <!-- กราฟ -->
+      <!-- Chart -->
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--neon-purple)"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 17.08z"/></svg>
-            แนวโน้มความชื้นย้อนหลัง
+            Historical Trend Analysis
           </div>
         </div>
         <div class="chart-box">
@@ -293,25 +312,25 @@
         </div>
       </div>
 
-      <!-- Log ประวัติแบบ Terminal Table -->
+      <!-- Logs Table -->
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--neon-green)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-            ประวัติการซิงค์ล่าสุด
+            System Sync Logs
           </div>
         </div>
         <table class="log-table">
           <thead>
             <tr>
-              <th>เวลา</th>
-              <th>แปลง</th>
-              <th>ความชื้น</th>
-              <th>สถานะ</th>
+              <th>Timestamp</th>
+              <th>Zone ID</th>
+              <th>Moisture</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody id="logList">
-            <tr><td colspan="4" style="text-align:center; color:var(--text-sub);">กำลังโหลดประวัติ...</td></tr>
+            <tr><td colspan="4" style="text-align:center; color:var(--text-sub);">Loading System Logs...</td></tr>
           </tbody>
         </table>
       </div>
@@ -332,33 +351,32 @@ let chartInstance = null;
 function formatTime(isoStr) {
   if(!isoStr) return "—";
   const d = new Date(isoStr);
-  return d.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
 }
 
-// 1. เรนเดอร์หลอดแนวนอนสไตล์ใหม่
+// 1. Render Zone Progress Bars (English)
 function renderZones(zones) {
   const grid = document.getElementById("zoneGrid");
   
   if(!zones || zones.length === 0) {
-    grid.innerHTML = `<p style="text-align:center; color:var(--text-sub);">ไม่พบข้อมูลแปลง</p>`;
+    grid.innerHTML = `<p style="text-align:center; color:var(--text-sub);">No Zone Data Available</p>`;
     return;
   }
 
   grid.innerHTML = zones.map(z => {
     const pct = Math.max(0, Math.min(100, z.moisture));
     
-    // กำหนดสีตามเงื่อนไขความชื้น
     let color = "var(--neon-green)";
-    let statusText = "ปกติ";
+    let statusText = "OPTIMAL";
     let bgTag = "rgba(0, 255, 136, 0.1)";
 
     if (z.moisture < 20) {
       color = "var(--neon-pink)";
-      statusText = "แห้งเกินไป";
+      statusText = "CRITICAL DRY";
       bgTag = "rgba(255, 0, 85, 0.1)";
     } else if (z.moisture > 70) {
       color = "var(--neon-cyan)";
-      statusText = "ชื้นสูง";
+      statusText = "HIGH MOISTURE";
       bgTag = "rgba(0, 240, 255, 0.1)";
     }
 
@@ -373,7 +391,7 @@ function renderZones(zones) {
                 <path d="M11 18v4h2v-4"/>
               </svg>
             </div>
-            แปลงทุเรียน ${z.zone}
+            ZONE ${z.zone}
           </div>
           <div class="zone-value-num" style="color: ${color};">${z.moisture}%</div>
         </div>
@@ -384,41 +402,41 @@ function renderZones(zones) {
 
         <div class="zone-foot">
           <span class="status-tag" style="background: ${bgTag}; color: ${color};">${statusText}</span>
-          <span>อัปเดต: ${formatTime(z.updatedAt)} น.</span>
+          <span>UPDATED: ${formatTime(z.updatedAt)}</span>
         </div>
       </div>
     `;
   }).join("");
 }
 
-// 2. เรนเดอร์ประวัติแบบ Terminal Table
+// 2. Render Terminal Logs Table (English)
 function renderLog(history) {
   const list = document.getElementById("logList");
   const recent = [...history].slice(-6).reverse();
   
   if (recent.length === 0) {
-    list.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-sub);">ไม่มีประวัติ</td></tr>`;
+    list.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-sub);">No Logs Recorded</td></tr>`;
     return;
   }
 
   list.innerHTML = recent.map(h => {
     let color = "var(--neon-green)";
-    let label = "ปกติ";
-    if (h.moisture < 20) { color = "var(--neon-pink)"; label = "แห้ง"; }
-    else if (h.moisture > 70) { color = "var(--neon-cyan)"; label = "ชื้นสูง"; }
+    let label = "OPTIMAL";
+    if (h.moisture < 20) { color = "var(--neon-pink)"; label = "DRY"; }
+    else if (h.moisture > 70) { color = "var(--neon-cyan)"; label = "WET"; }
 
     return `
       <tr>
-        <td>${formatTime(h.time)} น.</td>
-        <td>แปลง ${h.zone}</td>
-        <td style="font-weight:700; color:${color};">${h.moisture}%</td>
-        <td><span style="color:${color};">${label}</span></td>
+        <td style="font-family: var(--font-heading); font-size:11px;">${formatTime(h.time)}</td>
+        <td style="font-weight:600;">ZONE ${h.zone}</td>
+        <td style="font-family: var(--font-heading); font-weight:700; color:${color};">${h.moisture}%</td>
+        <td><span style="font-family: var(--font-heading); font-size:10px; color:${color}; font-weight:700;">${label}</span></td>
       </tr>
     `;
   }).join("");
 }
 
-// 3. กราฟแนวโน้ม
+// 3. Trend Line Chart
 function renderChart(history, zones) {
   const ctx = document.getElementById('trendChart').getContext('2d');
   const sortedHistory = [...history].sort((a,b) => new Date(a.time) - new Date(b.time));
@@ -434,7 +452,7 @@ function renderChart(history, zones) {
     const themeColor = colors[index % colors.length];
 
     return {
-      label: `แปลง ${z.zone}`,
+      label: `Zone ${z.zone}`,
       data: zoneData,
       borderColor: themeColor,
       borderWidth: 2,
@@ -457,18 +475,18 @@ function renderChart(history, zones) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { labels: { color: '#64748b', font: { family: 'Prompt' } } }
+          legend: { labels: { color: '#64748b', font: { family: 'Orbitron', size: 10 } } }
         },
         scales: {
-          x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b' } },
-          y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b' } }
+          x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b', font: { family: 'Inter' } } },
+          y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b', font: { family: 'Inter' } } }
         }
       }
     });
   }
 }
 
-// ดึงข้อมูล Real-Time
+// Fetch Live Telemetry Data
 async function fetchLiveData() {
   const statusLabel = document.getElementById("liveLabel");
   const dot = document.getElementById("liveDot");
@@ -479,7 +497,7 @@ async function fetchLiveData() {
     const data = await res.json();
     
     if (data.zones && data.zones.length > 0) {
-      statusLabel.textContent = "SYSTEM ACTIVE";
+      statusLabel.textContent = "SYSTEM ONLINE";
       dot.style.backgroundColor = "var(--neon-green)";
       
       renderZones(data.zones);
@@ -487,7 +505,7 @@ async function fetchLiveData() {
       renderChart(data.history, data.zones);
     }
   } catch (err) {
-    statusLabel.textContent = "OFFLINE";
+    statusLabel.textContent = "DISCONNECTED";
     dot.style.backgroundColor = "var(--neon-pink)";
   }
 }
